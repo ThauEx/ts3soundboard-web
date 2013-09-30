@@ -1,245 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title>TS3 Soundboard Interface</title>
-<script src="/js/jquery.min.js"></script>
-<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Sans+Mono|Alef' rel='stylesheet' type='text/css'>
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>TS3 Soundboard Interface</title>
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Sans+Mono|Alef' rel='stylesheet' type='text/css'>
+	<link href="/static/css/default.css" rel="stylesheet" type="text/css">
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<style>
-.clearfix:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
-}
- 
-.clearfix {
-	display: inline-block;
-}
- 
-html[xmlns] .clearfix {
-	display: block;
-}
- 
-* html .clearfix {
-	height: 1%;
-}
-
-body {
-	font-family: 'Droid Sans', sans-serif;
-	background-color: #222; /* f2f2f2 */
-}
-h1 {
-	font-family: 'Alef', sans-serif;
-	margin: 0;
-	color: #333;
-	padding: 15px 15px 8px;
-}
-h2 {
-	font-family: 'Alef', sans-serif;
-	margin: 0;
-	margin-bottom: 5px;
-	margin-top: 5px;
-	padding: 0;
-	text-transform: uppercase;
-}
-h3 {
-	font-family: 'Alef', sans-serif;
-	font-size: 14px;
-	margin: 0;
-	padding: 0;
-	margin-left: 20px;
-	margin-bottom: 8px;
-}
-pre, code {
-	font-family: 'Droid Sans Mono', sans-serif;
-}
-code {
-	display: block;
-	background-color: #eee;
-	padding: 5px;
-	border: 1px solid #ccc;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	white-space: pre-wrap;
-	font-size: 0.8em;
-}
-ol, ul {
-	margin: 0;
-	margin-bottom: 10px;
-}
-dl {
-	padding: 0;
-	padding-left: 20px;
-	margin: 0;
-}
-dt {
-	font-size: 13px;
-	padding: 5px;
-	padding-left: 0;
-	border-top: 1px solid #eee;
-	cursor: pointer;
-}
-dt:first-child {
-	border-top: 0;
-	padding-top: 0;
-}
-dd:last-child {
-	padding-bottom: 0;
-}
-dd {
-	display: none;
-	font-size: 12px;
-	margin: 0px;
-	padding: 5px;
-	padding-top: 0;
-	border-left: 5px solid #ccc;
-	line-height: 1.5em;
-}
-li {
-	font-size: 0.9em;
-	padding: 4px;
-}
-p {
-	font-size: 0.9em;
-	margin-top: 5px;
-	margin-left: 20px;
-	line-height: 1.4em;
-}
-.description {
-	margin-bottom: 4px;
-	font-size: 10px;
-}
-.dl {
-	margin-left: 20px;
-	font-size: 0.9em;
-	margin-bottom: 10px;
-	line-height: 1.4em;
-}
-.version {
-	font-weight: bold;
-}
-.wrapper {
-	margin: 20px auto;
-	width: 1000px;
-	background-color: #fafafa;
-	box-shadow: 0 0 16px rgba(0,0,0,0.5);
-	border-top: 8px solid #aaa;
-}
-.left {
-	float: left;
-	width: 650px;
-	padding-left: 15px;
-}
-.right {
-	float: right;
-	width: 300px;
-	padding-right: 15px;
-}
-a {
-	color: #068fd5;
-}
-input[type="submit"], input[type="button"], .button {
-	margin: 0;
-	border: 0;
-	border-radius: 4px 4px 5px 5px;
-	position: relative;
-	text-align: center;
-	background-color: #c6cacd;
-	box-shadow: 0 4px 0 #b0b5ba;
-	color: #fff;
-	text-decoration: none;
-	-webkit-transition: all .2s ease;
-	-moz-transition: all .2s ease;
-	transition: all .2s ease;
-	cursor: pointer;
-	display: inline-block;
-	height: 38px;
-	line-height: 40px;
-	font-size: 13px;
-	padding-left: 10px;
-	padding-right: 10px;
-}
-input[type="submit"]:hover, input[type="button"]:hover, .button:hover {
-	background-color: #b0b5ba;
-}
-form {
-	margin: 0;
-	padding: 0;
-}
-.changelog li {
-	padding: 0;
-	padding-top: 3px;
-	font-size: 12px;
-}
-.footer {
-	margin-top: 10px;
-	background-color: #666;
-	color: #ccc;
-	padding: 15px;
-	font-size: 12px;
-}
-
-
-.warn {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	border: 1px solid #880000;
-	color: #aa0000;
-	line-height: 1.3em;
-	padding: 10px;
-	font-size: 13px;
-}
-
-.tracks {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-.tracks li {
-	list-style: none;
-	margin: 0;
-	padding: 5px;
-	cursor: pointer;
-	background-color: #f6f6f6;
-	overflow: hidden;
-}
-.tracks li:nth-child(odd) {
-	background-color: #f3f3f3;
-}
-.tracks li:hover {
-	background-color: #eee;
-}
-</style>
-<div class="wrapper">
-	<h1>TS3Soundboard</h1>
-	<div style="margin-left: 15px; font-size: 11px;">Currently Playing</div>
-	<a href="#" class="button" id="logout" style="float: right; margin-right: 15px; background-color: #aa4444;">LOGOUT</a>
-	<a href="#" class="button" id="stop" style="float: right; margin-right: 15px; background-color: #aa4444;">STOP</a>
-	<h2 style="margin-left: 15px; margin-top: 0;" id="playing"></h2>
-	<div class="clearfix" style="width: 100%;">
-		<div class="left">
-			<h2>Tracks</h2>
-			<div>
-				<ul id="tracks" class="tracks"></ul>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">TS3Soundboard</a>
 			</div>
-		</div>
-		<div class="right">
-			<h2>Playlist</h2>
-			<div>
-				<ul id="playlist" class="tracks"></ul>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#" id="clear">Clear list</a></li>
+					<li><a href="#" id="refresh">Refresh</a></li>
+					<li><a href="#" id="upload">Upload</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" id="logout">Logout</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>
-	<div class="footer">&copy; 2011-2013 Michael Friese. All rights reserved.</div>
+	<div class="navbar navbar-inverse navbar-fixed-bottom">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<span class="navbar-brand">Now Playing: <span id="playing"></span></span>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#" id="next"><div class="btn-next" title="Next song"></div></a></li>
+					<li><a href="#" id="stop"><div class="btn-stop" title="Stop"></div></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Tracks</h3>
+				</div>
+				<ul id="tracks" class="list-group"></ul>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Playlist</h3>
+				</div>
+				<ul id="playlist" class="list-group"></ul>
+			</div>
+		</div>
+	</div>
+	<div class="footer">&copy; 2011-2013 Michael Friese, 2013 Thau. All rights reserved.</div>
 </div>
 <script>
 $(document).ready(function () {
+	$('#upload-popup').modal({show: false});
+
 	$(document).on('click', '#logout', function () {
 		$.ajax({
 			type: 'POST',
@@ -249,10 +86,23 @@ $(document).ready(function () {
 				window.location.href = '/';
 			},
 			error: function () {
-				window.location.href = '/';	
+				window.location.href = '/';
 			}
 		});
-		return false;		
+		return false;
+	});
+	$(document).on('click', '#refresh', function () {
+		$.ajax({
+			type: 'POST',
+			url: '/api/refresh',
+			success: function () {
+				refresh();
+			},
+			error: function () {
+				alert('You are not allowed to do that, sorry.');
+			}
+		});
+		return false;
 	});
 	$(document).on('click', '#stop', function () {
 		$.ajax({
@@ -265,12 +115,82 @@ $(document).ready(function () {
 				alert('You are not allowed to do that, sorry.');
 			}
 		});
-		return false;		
+		return false;
 	});
+
+	$(document).on('click', '#upload', function() {
+		$('#upload-popup').modal('toggle');
+	});
+
+	$(document).on('submit', '#upload-yt', function(event) {
+		event.preventDefault();
+
+		if ($("#upload-youtube-link").is(":empty")) {
+			alert("Video url is missing!");
+			return false;
+		}
+
+		var progressBar = $("#upload-yt").find(".progress");
+		postData = $("#upload-yt").serialize();
+		progressBar.removeClass("hidden");
+		$.ajax({
+			type: 'POST',
+			url: '/file/upload',
+			data: postData,
+			success: function (data) {
+				if (data === true) {
+					alert("Die Datei wurde erfolgreich hinzugefügt!");
+					progressBar.addClass("hidden");
+					$("#upload-popup").modal("hide");
+				} else {
+					progressBar.addClass("hidden");
+					alert("Es ist leider ein Fehler aufgetreten!");
+				}
+			},
+			error: function () {
+				progressBar.addClass("hidden");
+				alert('You are not allowed to do that, sorry.');
+			}
+		});
+		return false;
+	});
+
+	$(document).on('submit', '#upload-file', function(event) {
+		event.preventDefault();
+		alert("noch nicht eingebaut :P");
+	});
+
+
 	$(document).on('click', '#tracks li', function () {
 		$.ajax({
 			type: 'POST',
 			url: '/api/play/' + $(this).attr('data-id'),
+			success: function () {
+				refresh();
+			},
+			error: function () {
+				alert('You are not allowed to do that, sorry.');
+			}
+		});
+		return false;
+	});
+	$(document).on('click', '#clear', function () {
+		$.ajax({
+			type: 'POST',
+			url: '/api/clear',
+			success: function () {
+				refresh();
+			},
+			error: function () {
+				alert('You are not allowed to do that, sorry.');
+			}
+		});
+		return false;
+	});
+	$(document).on('click', '#next', function () {
+		$.ajax({
+			type: 'POST',
+			url: '/api/next',
 			success: function () {
 				refresh();
 			},
@@ -311,7 +231,7 @@ $(document).ready(function () {
 		dataType: 'json',
 		success: function (data) {
 			data.forEach(function (track) {
-				$('<li/>').appendTo('#tracks').attr('data-id', track.id).text(track.name);
+				$('<li/>').appendTo('#tracks').attr('data-id', track.id).text(track.name).addClass("list-group-item");
 			});
 		}
 	});
@@ -321,9 +241,9 @@ $(document).ready(function () {
 			url: '/api/playlist',
 			dataType: 'json',
 			success: function (data) {
-				$('#playlist').html('');
+				$('#playlist').empty();
 				data.forEach(function (track, index) {
-					$('<li/>').appendTo('#playlist').attr('data-id', index).text(track.name);
+					$('<li/>').appendTo('#playlist').attr('data-id', index).text(track.name).addClass("list-group-item");
 				});
 			}
 		});
@@ -346,5 +266,52 @@ $(document).ready(function () {
 	refresh();
 });
 </script>
+<div id="upload-popup" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title">Upload</h4>
+		</div>
+		<div class="modal-body">
+			<div id="upload-content">
+				<ul class="nav nav-tabs" id="upload-tabs">
+					<li class="active"><a href="#youtube" data-toggle="tab">Youtube</a></li>
+					<li><a href="#upload-file" data-toggle="tab">Upload</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="youtube">
+						<form action="/file/upload" method="post" id="upload-yt" role="form">
+							<div class="form-group">
+								<label for="upload-youtube-link">Link</label>
+								<input type="url" class="form-control" id="upload-youtube-link" name="youtube" placeholder="https://www.youtube.com/?watch=...">
+							</div>
+							<div class="form-group">
+								<label for="upload-youtube-title">Titel</label>
+								<input type="text" class="form-control" id="upload-youtube-title" name="filename" placeholder="Interpret - Titel">
+							</div>
+							<div class="progress progress-striped active hidden">
+								<div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+									<span class="sr-only">Uploading...</span>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary">Youtube Upload</button>
+						</form>
+					</div>
+					<div class="tab-pane" id="upload-file">
+						<form action="/file/upload" method="post" enctype="multipart/form-data" id="upload-file" role="form">
+							<input type="file" name="uploadfile" />
+							<button type="submit" class="btn btn-primary">Audio Upload</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
 </body>
 </html>
