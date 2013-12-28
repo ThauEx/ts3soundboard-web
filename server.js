@@ -42,7 +42,6 @@ app.configure(function() {
 
 app.set('port', process.env.PORT || 8080);
 app.listen(app.get('port'));
-//app.listen(8080);
 
 app.use(express.basicAuth(function(user, pass, fn) {
     if (config.users && config.users[user] && config.users[user].password && config.users[user].password == pass && config.users[user].permissions) {
@@ -58,7 +57,7 @@ app.get('/api/tracks', function(req, res) {
         res.send(403, 'Not allowed.');
         return;
     }
-    res.setHeader('Content-Type', 'application/x-json');
+    res.setHeader('Content-Type', 'application/json');
     var result = [];
     tracks.forEach(function(track, id) {
         result.push({
@@ -74,7 +73,7 @@ app.get('/api/playing', function(req, res) {
         res.send(403, 'Not allowed.');
         return;
     }
-    res.setHeader('Content-Type', 'application/x-json');
+    res.setHeader('Content-Type', 'application/json');
     if (isPlaying) {
         res.end(JSON.stringify({
             id: currentlyPlaying,
@@ -90,12 +89,12 @@ app.get('/api/playlist', function(req, res) {
         res.send(403, 'Not allowed.');
         return;
     }
-    res.setHeader('Content-Type', 'application/x-json');
+    res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(playlist));
 });
 
 app.post('/api/refresh', function(req, res) {
-    if (!req.user.permissions.stop) {
+    if (!req.user.permissions.refresh) {
         res.send(403, 'Not allowed.');
         return;
     }
@@ -182,22 +181,30 @@ app.post('/api/clear', function(req, res) {
 
 app.post('/file/upload', function(req, res) {
     if (typeof req.files != "undefined") {
-        var temp_path = req.files.uploadfile.path;
-        var fileName = req.files.uploadfile.name;
+        var temp_path   = req.files.uploadfile.path;
+        var fileName    = req.files.uploadfile.name;
+
+        console.log("got file upload: " + fileName);
+console.log(req.body.filename);
+        if (typeof req.body.filename != "undefined" && req.body.filename != "") {
+            console.log("File name (custom): " + fileName);
+            fileName = req.body.filename;
+        }
+
         fileName = fileName.replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue');
         fileName = fileName.replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue');
-        fileName = fileName.replace(/ß/gi, 'ss');
+        fileName = fileName.replace(/ß/g, 'ss').replace(/\//g, '-');
 
         var save_path = BASE_PATH + '/' + fileName;
 
         var is = fs.createReadStream(temp_path)
         var os = fs.createWriteStream(save_path);
 
-        util.pump(is, os, function() {
+        is.pipe(os, function() {
             fs.unlinkSync(temp_path);
         });
 
-        res.end();
+        res.end(JSON.stringify(true));
     } else if (req.body.youtube != "") {
         // code used from: https://github.com/drowzyorginal/node-ytmp3/
         console.log("got youtube video: " + req.body.youtube)
@@ -210,7 +217,7 @@ app.post('/file/upload', function(req, res) {
 
             console.log("Video title: " + videoTitle);
 
-            if (typeof req.body.filename != "undefined" || req.body.filename != "") {
+            if (typeof req.body.filename != "undefined" && req.body.filename != "") {
                 console.log("Video title (custom): " + videoTitle);
                 videoTitle = req.body.filename;
             } else {
@@ -219,10 +226,10 @@ app.post('/file/upload', function(req, res) {
 
             videoTitle = videoTitle.replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue');
             videoTitle = videoTitle.replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue');
-            videoTitle = videoTitle.replace(/ß/gi, 'ss');
+            videoTitle = videoTitle.replace(/ß/g, 'ss').replace(/\//g, '-');
 
             var destination = path.normalize(BASE_PATH + "/../yttmp/") + videoTitle + ".flv";
-            var vidstream = fs.createWriteStream(destination);
+            var vidstream   = fs.createWriteStream(destination);
             myytld.pipe(vidstream);
 
             vidstream.on('close', function() {
@@ -237,7 +244,7 @@ app.post('/file/upload', function(req, res) {
                     }
                 }
 
-                res.setHeader('Content-Type', 'application/x-json');
+                res.setHeader('Content-Type', 'application/json');
 
                 var destination_file = destination.split('/').slice(-1)[0].replace('.flv', '.mp3');
                 var ffmpeg = 'avconv -y -i ' + '"' + destination + '"' + ' ' + '"' + destination_file + '"';
@@ -282,12 +289,12 @@ recSocket.on('message', function(msg) {
 readDir();
 
 // Get all files in that directory
-
 function readDir() {
     fs.readdir(BASE_PATH, function(err, files) {
         if (err) {
             throw new Error('Could not find files in basePath. Aborting.');
         }
+
         files.forEach(function(file) {
             tracks.push({
                 file: BASE_PATH + '/' + file,
